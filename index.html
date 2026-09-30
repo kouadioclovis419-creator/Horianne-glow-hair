@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Horianne Glow Hair</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }<div id="cart">
+    <h2>🛒 Mon panier</h2>
+
+    <div id="cart">
+
+    <h2>🛒 Mon panier</h2>
+
+    <div id="cart-items"></div>
+
+    <h3>
+        Total :
+        <span id="cart-total">0</span> FCFA
+    </h3>
+
+    <button onclick="clearCart()">
+        Vider le panier
+    </button>
+
+    <button onclick="orderWhatsApp()">
+        📲 Commander sur WhatsApp
+    </button>
+
+</div>
+<div id="customer-form">
+
+    <h2>📦 Informations de livraison</h2>
+
+    <input
+        type="text"
+        id="customer-name"
+        placeholder="Nom et prénom"
+    >
+
+    <input
+        type="tel"
+        id="customer-phone"
+        placeholder="Numéro de téléphone"
+    >
+
+    <input
+        type="text"
+        id="customer-city"
+        placeholder="Ville"
+    >
+
+    <input
+        type="text"
+        id="customer-address"
+        placeholder="Quartier / Adresse"
+    >
+
+    <textarea
+        id="customer-note"
+        placeholder="Message ou précision (facultatif)"
+    ></textarea>
+
+</div>
+<script>
+
+let cart = [];
+
+
+function addToCart(name, price) {
+
+    let product = cart.find(
+        item => item.name === name
+    );
+
+    if (product) {
+
+        product.quantity++;
+
+    } else {
+
+        cart.push({
+            name: name,
+            price: price,
+            quantity: 1
+        });
+
+    }
+
+    displayCart();
+}
+
+
+function displayCart() {
+
+    let cartItems =
+        document.getElementById("cart-items");
+
+    let total = 0;
+
+    cartItems.innerHTML = "";
+
+    cart.forEach((product, index) => {
+
+        let productTotal =
+            product.price * product.quantity;
+
+        total += productTotal;
+
+        cartItems.innerHTML += `
+            <div>
+                <strong>${product.name}</strong>
+
+                <p>
+                    ${product.price} FCFA ×
+                    ${product.quantity}
+                    = ${productTotal} FCFA
+                </p>
+
+                <button onclick="decreaseQuantity(${index})">
+                    −
+                </button>
+
+                <button onclick="increaseQuantity(${index})">
+                    +
+                </button>
+
+                <button onclick="removeProduct(${index})">
+                    🗑️
+                </button>
+
+                <hr>
+            </div>
+        `;
+
+    });
+
+    document.getElementById("cart-total").textContent =
+        total;
+}
+
+
+function increaseQuantity(index) {
+
+    cart[index].quantity++;
+
+    displayCart();
+}
+
+
+function decreaseQuantity(index) {
+
+    if (cart[index].quantity > 1) {
+
+        cart[index].quantity--;
+
+    } else {
+
+        cart.splice(index, 1);
+
+    }
+
+    displayCart();
+}
+
+
+function removeProduct(index) {
+
+    cart.splice(index, 1);
+
+    displayCart();
+}
+
+
+function clearCart() {
+
+    cart = [];
+
+    displayCart();
+}
+
+
+function orderWhatsApp() {
+
+    if (cart.length === 0) {
+
+        alert("Votre panier est vide.");
+
+        return;
+    }
+
+    let name =
+        document.getElementById("customer-name").value.trim();
+
+    let phone =
+        document.getElementById("customer-phone").value.trim();
+
+    let city =
+        document.getElementById("customer-city").value.trim();
+
+    let address =
+        document.getElementById("customer-address").value.trim();
+
+    let note =
+        document.getElementById("customer-note").value.trim();
+
+
+    if (!name || !phone || !city || !address) {
+
+        alert(
+            "Veuillez remplir votre nom, téléphone, ville et adresse."
+        );
+
+        return;
+    }
+
+
+    let message =
+        "Bonjour Horianne Glow Hair,%0A%0A" +
+        "Je souhaite passer une commande.%0A%0A";
+
+
+    let total = 0;
+
+
+    cart.forEach(product => {
+
+        let productTotal =
+            product.price * product.quantity;
+
+        total += productTotal;
+
+        message +=
+            "- " +
+            product.name +
+            " x" +
+            product.quantity +
+            " : " +
+            productTotal +
+            " FCFA%0A";
+
+    });
+
+
+    message +=
+        "%0A💰 Total : " +
+        total +
+        " FCFA%0A%0A" +
+
+        "👤 Nom : " +
+        name +
+        "%0A" +
+
+        "📱 Téléphone : " +
+        phone +
+        "%0A" +
+
+        "📍 Ville : " +
+        city +
+        "%0A" +
+
+        "🏠 Adresse : " +
+        address +
+        "%0A";
+
+
+    if (note) {
+
+        message +=
+            "📝 Précision : " +
+            note +
+            "%0A";
+
+    }
+
+
+    message +=
+        "%0AMerci de confirmer ma commande.";
+
+
+    let whatsappNumber =
+        "2250150595673";
+
+
+    window.open(
+        "https://wa.me/" +
+        whatsappNumber +
+        "?text=" +
+        message,
+        "_blank"
+    );
+}
+
+    let message =
+        "Bonjour Horianne Glow Hair,%0A%0A" +
+        "Je souhaite commander :%0A%0A";
+
+    let total = 0;
+
+    cart.forEach(product => {
+
+        let productTotal =
+            product.price * product.quantity;
+
+        total += productTotal;
+
+        message +=
+            "- " + product.name +
+            " x" + product.quantity +
+            " : " + productTotal +
+            " FCFA%0A";
+
+    });
+
+    message +=
+        "%0ATotal : " +
+        total +
+        " FCFA%0A%0A" +
+        "Merci de me confirmer la commande.";
+
+    let phone = "2250150595673";
+
+    window.open(
+        "https://wa.me/" + phone +
+        "?text=" + message,
+        "_blank"
+    );
+}
+
+</script>
+
+let cart = [];
+
+function addToCart(name, price) {
+
+    let existingProduct = cart.find(
+        product => product.name === name
+    );
+
+    if (existingProduct) {
+        existingProduct.quantity++;
+    } else {
+
+        cart.push({
+            name: name,
+            price: price,
+            quantity: 1
+        });
+
+    }
+
+    displayCart();
+}
+
+
+function displayCart() {
+
+    let cartItems = document.getElementById("cart-items");
+
+    let total = 0;
+
+    cartItems.innerHTML = "";
+
+    cart.forEach(product => {
+
+        let productTotal =
+            product.price * product.quantity;
+
+        total += productTotal;
+
+        cartItems.innerHTML += `
+            <p>
+                ${product.name}
+                × ${product.quantity}
+                = ${productTotal} FCFA
+            </p>
+        `;
+
+    });
+
+    document.getElementById("cart-total").textContent = total;
+}
+
+
+function clearCart() {
+
+    cart = [];
+
+    displayCart();
+
+}
+
+</script>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff8fb;
+            color: #222;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        header h1 {
+            color: #d63384;
+            font-size: 28px;
+        }
+
+        header p {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            background: #fce4ec;
+        }
+
+        .hero h2 {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #d63384;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .products {
+            padding: 45px 15px;
+        }
+
+        .products h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .category-title {
+            color: #d63384;
+            margin: 30px 0 15px;
+            text-align: center;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding-bottom: 18px;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+
+        .product-card h3 {
+            font-size: 17px;
+            margin: 15px 12px 8px;
+        }
+
+        .product-card p {
+            font-size: 13px;
+            color: #777;
+            margin: 0 12px 10px;
+            line-height: 1.4;
+        }
+
+        .price {
+            display: block;
+            color: #d63384;
+            font-size: 17px;
+            font-weight: bold;
+            margin: 0 12px 15px;
+        }
+
+        .product-card .btn {
+            margin-left: 12px;
+            font-size: 13px;
+            padding: 10px 15px;
+        }
+
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        @media (min-width: 700px) {
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Horianne Glow Hair</h1>
+    <p>Beauté • Cheveux • Visage</p>
+</header>
+
+<section class="hero">
+
+    <h2>Révélez votre beauté ✨</h2>
+
+    <p>
+        Découvrez notre sélection de produits
+        pour prendre soin de vos cheveux et de votre visage.
+    </p>
+
+    <a href="#produits" class="btn">
+        Voir les produits
+    </a>
+
+</section>
+
+<section class="products" id="produits">
+
+    <h2>Notre boutique 🛍️</h2>
+
+    <h3 class="category-title">💇🏾‍♀️ Produits cheveux</h3>
+
+    <div class="product-grid">
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=600&q=80">
+
+            <h3>Huile Capillaire Glow</h3>
+
+            <p>
+                Huile pour prendre soin et nourrir les cheveux.
+            </p>
+
+            <span class="price">3 000 FCFA</span>
+
+            <button class="btn" onclick="addToCart('Huile Capillaire Glow', 3000)">
+    Acheter
+</button>
+        </div>
+
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=600&q=80">
+
+            <h3>Shampooing Glow</h3>
+
+            <p>
+                Shampooing pour une routine capillaire complète.
+            </p>
+
+            <span class="price">4 000 FCFA</span>
+
+            <button class="btn" onclick="addToCart('Shampooing Glow', 4000)">
+    Acheter
+</button>
+        </div>
+
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80">
+
+            <h3>Masque Capillaire</h3>
+
+            <p>
+                Soin nourrissant pour vos cheveux.
+            </p>
+
+            <span class="price">5 000 FCFA</span>
+
+          <button class="btn" onclick="addToCart('Masque Capillaire', 5000)">
+    Acheter
+</button>
+        </div>
+
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80">
+
+            <h3>Crème Cheveux</h3>
+
+            <p>
+                Crème destinée à votre routine capillaire.
+            </p>
+
+            <span class="price">3 500 FCFA</span>
+
+        
+        </div>
+<button class="btn" onclick="addToCart('Crème Cheveux', 3500)">
+    Acheter
+</button>
+    </div>
+
+
+    <h3 class="category-title">✨ Produits visage</h3>
+
+    <div class="product-grid">
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80">
+
+            <h3>Nettoyant Visage</h3>
+
+            <p>
+                Nettoyant pour votre routine quotidienne.
+            </p>
+
+            <span class="price">4 000 FCFA</span>
+
+          <button class="btn" onclick="addToCart('Nettoyant Visage', 4000)">
+    Acheter
+</button>
+        </div>
+
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1620916566217-8b3f4f3a6a14?auto=format&fit=crop&w=600&q=80">
+
+            <h3>Sérum Visage</h3>
+
+            <p>
+                Soin pour compléter votre routine beauté.
+            </p>
+
+            <span class="price">5 000 FCFA</span>
+
+            <button class="btn" onclick="addToCart('Sérum Visage', 5000)">
+    Acheter
+</button>
+        </div>
+
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=600&q=80">
+
+            <h3>Crème Visage</h3>
+
+            <p>
+                Crème pour votre routine de soin.
+            </p>
+
+            <span class="price">4 500 FCFA</span>
+
+            <button class="btn" onclick="addToCart('Crème Visage', 4500)">
+    Acheter
+</button>
+        </div>
+
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&w=600&q=80">
+
+            <h3>Masque Visage</h3>
+
+            <p>
+                Un soin à intégrer à votre routine beauté.
+            </p>
+
+            <span class="price">3 500 FCFA</span>
+
+            <button class="btn" onclick="addToCart('Masque Visage', 3500)">
+    Acheter
+</button>
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <h3>Horianne Glow Hair</h3>
+
+    <p>Votre beauté, notre passion.</p>
+
+    <p>📲 WhatsApp : +225 01 50 59 56 73</p>
+
+    <p>📞 Contactez-nous pour vos commandes</p>
+
+    <p>© 2026 Horianne Glow Hair</p>
+
+</footer>
+</body>
+</html>
